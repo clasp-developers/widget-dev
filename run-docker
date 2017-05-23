@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker run -v $HOME/Dev/widget-dev/ipykernel:/usr/local/lib/python2.7/dist-packages/ipykernel -v $HOME/Dev/widget-dev/cl-jupyter-widgets:/home/app/quicklisp/local-projects/cl-jupyter-widgets -p 8888:8888 -p 4005:4005 -it drmeister/cando
