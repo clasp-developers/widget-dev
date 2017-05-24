@@ -1,3 +1,6 @@
 #!/bin/bash
 
-docker run -v $HOME/Development/widget-dev/ipykernel:/usr/local/lib/python2.7/dist-packages/ipykernel -v $HOME/Development/widget-dev/cl-jupyter-widgets:/home/app/quicklisp/local-projects/cl-jupyter-widgets -p 8888:8888 -p 4005:4005 -it drmeister/cando
+docker run -v $HOME/Development/widget-dev/ipykernel:/usr/local/lib/python2.7/dist-packages/ipykernel \
+       -v $HOME/Development/widget-dev/cl-jupyter-widgets:/home/app/quicklisp/local-projects/cl-jupyter-widgets \
+       -v $HOME/Development/widget-dev/cl-jupyter:/home/app/quicklisp/local-projects/cl-jupyter \
+       -p 8888:8888 -p 4005:4005 -it $* drmeister/cando
