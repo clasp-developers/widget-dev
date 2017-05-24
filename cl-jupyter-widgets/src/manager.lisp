@@ -2,6 +2,7 @@
 ;;; Comments are copied from ipykernel
 (in-package #:cl-jupyter-widgets)
 
+(defvar *kernel* nil)
       
 (defvar *kernel-comm-managers* (make-hash-table)
   "Map kernels to comm-managers")
@@ -10,7 +11,7 @@
 (defclass comm-manager ()
   ((kernel :initarg :kernel :reader kernel)
    (comms :initform (make-hash-table :test #'equal) :reader comms)
-   (targets :initform (make-hash-table :test #'equal) :targets :reader targets)))
+   (targets :initform (make-hash-table :test #'equal) :reader targets)))
 
 (defmethod register-target ((self comm-manager) target-name func)
   "Register a function func for a given target name.
@@ -18,7 +19,7 @@
   (setf (gethash target-name (targets self)) func))
 
 (defmethod unregister-target ((self comm-manager) target-name)
-  (clrhash target-name (targets self)))
+  (remhash target-name (targets self)))
 
 (defmethod register-comm ((self comm-manager) comm)
   (let ((comm-id (comm-id comm)))
@@ -27,7 +28,7 @@
     comm-id))
 
 (defmethod unregister-comm ((self comm-manager) comm)
-  (clrhash (comm-id comm) (comms self)))
+  (remhash (comm-id comm) (comms self)))
 
 (defmethod get-comm ((self comm-manager) comm-id)
   (let ((comm (gethash comm-id (comms self) nil)))
@@ -75,7 +76,7 @@
 	 (comm-id (cdr (assoc "comm_id" content)))
 	 (comm (get-comm self comm-id)))
     (unless comm (return-from comm-close nil))
-    (clrhash comm-id (comms self))
+    (remhash comm-id (comms self))
     (handler-case
 	(handle-close comm msg)
       (error (err)

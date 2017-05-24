@@ -3,7 +3,7 @@
 (in-package #:cl-jupyter-widgets)
 
 (defclass comm ()
-  ((kernel :allocator :class :initform *kernel* :reader kernel)
+  ((kernel :allocation :class :initform *kernel* :reader kernel)
    (comm-id :initform (uuid:make-v4-uuid) :reader comm-id)))
 
 (defparameter *open-data* nil
