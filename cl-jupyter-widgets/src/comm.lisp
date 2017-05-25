@@ -12,7 +12,12 @@
   "Data (if any) to send with comm_close")
 
 
-(defmethod %publish-msg ((self comm) msg-type &rest rest &key data metadata buffers)
+(defmethod %publish-msg ((self comm) msg-type &rest rest
+			 &key (data (make-hash-table :test #'equal))
+			   (metadata (make-hash-table :test #'equal))
+			   buffers)
+  (error "IMPLEMENT  content = json_clean(dict(data=data, comm_id=self.comm_id, **keys))")
+  
   (error "implement me"))
 
 #|
