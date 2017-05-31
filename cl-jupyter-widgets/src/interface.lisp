@@ -3,28 +3,31 @@
 
 
 (defun kernel-start-hook (kernel)
+  (widget-log "In kernel-start-hook kernel -> ~a~%" kernel)
   (let ((comm-manager (make-instance 'comm-manager :kernel kernel)))
     (setf (gethash kernel *kernel-comm-managers*) comm-manager)))
 
 (defun kernel-shutdown-hook (kernel)
+  (widget-log "In kernel-shutdown-hook kernel -> ~a~%" kernel)
   (let ((comm-manager (gethash kernel *kernel-comm-managers*)))
     (if comm-manager
-	(clrhash kernel *kernel-comm-managers*)
+	(remhash kernel *kernel-comm-managers*)
 	(warn "The kernel ~a was shutdown but no comm-manager could be found for it" kernel))))
 
 
 (defun handle-comm-open (shell identities msg buffers)
-    (format t "[Shell] handling 'comm_open' - parsing message~%")
+  (widget-log "[Shell] handling 'comm_open' - parsing message~%")
   (cl-jupyter::send-status-update (cl-jupyter::kernel-iopub (cl-jupyter::shell-kernel shell)) msg "busy" :key (cl-jupyter::kernel-key shell))'
-  (format t "[Shell] done sending busy~%")
+  (widget-log "[Shell] done sending busy~%")
   (unwind-protect
        (progn
-	 (format t "[Shell] Parsing message~%")
+	 (widget-log "[Shell] Parsing message~%")
 	 (let ((content (myjson:parse-json-from-string (cl-jupyter::message-content msg))))
-	   (format t "  ==> msg = ~W~%" msg)
-	   (format t "  ==> comm_open Message content = ~W~%" content)))
-    (format t "    Unwound when trying to parse-json-from-string ~%")
-    (finish-output))
+	   (widget-log "  ==> msg = ~W~%" msg)
+	   (widget-log "  ==> comm_open Message content = ~W~%" content)
+	   
+	   ))
+    (widget-log "    Unwound when trying to parse-json-from-string ~%"))
   ;; status back to idle
   (cl-jupyter::send-status-update (cl-jupyter::kernel-iopub (cl-jupyter::shell-kernel shell)) msg "idle" :key (cl-jupyter::kernel-key shell)))
 
