@@ -3,6 +3,8 @@
 docker run -v $HOME/Development/widget-dev/ipykernel:/usr/local/lib/python2.7/dist-packages/ipykernel \
        -v $HOME/Development/widget-dev/cl-jupyter:/home/app/quicklisp/local-projects/cl-jupyter \
        -v $HOME/Development/widget-dev/cl-jupyter-widgets:/home/app/quicklisp/local-projects/cl-jupyter-widgets \
+       -v $HOME:/home/app/work/home \
+       -v $HOME/Development/widget-dev/tools:/home/app/tools \
        -p 8888:8888 -p 4005:4005 -it $* drmeister/cando
 
 

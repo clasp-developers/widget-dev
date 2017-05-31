@@ -42,9 +42,6 @@
   (setf cl-jupyter:*handle-comm-close-hook* #'handle-comm-close)
   )
 
-
-
-
 (defun send-comm-open (content)
   (let* ((msg (cl-jupyter::make-message cl-jupyter::*parent-msg* "comm_open" nil content))
 	 (shell (cl-jupyter::*shell*)))
