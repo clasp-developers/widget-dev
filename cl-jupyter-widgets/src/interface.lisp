@@ -25,17 +25,53 @@
 	 (let ((content (myjson:parse-json-from-string (cl-jupyter::message-content msg))))
 	   (widget-log "  ==> msg = ~W~%" msg)
 	   (widget-log "  ==> comm_open Message content = ~W~%" content)
-	   
-	   ))
-    (widget-log "    Unwound when trying to parse-json-from-string ~%"))
+	   (let* ((kernel (cl-jupyter::kernel shell))
+		  (manager (gethash kernel *kernel-comm-managers*)))
+	     ;; Should I pass identities for ident??????
+	     ;; I have no idea what the stream is
+	     (comm-open manager :I-dont-know-what-to-pass-for-stream :i-dont-know-what-to-pass-for-ident content))))
+    (widget-log "    Unwounding after parse-json-from-string or comm-open~%"))
   ;; status back to idle
   (cl-jupyter::send-status-update (cl-jupyter::kernel-iopub (cl-jupyter::shell-kernel shell)) msg "idle" :key (cl-jupyter::kernel-key shell)))
 
 (defun handle-comm-msg (shell identities msg buffers)
-  (warn "Handle comm_msg: ~a" msg))
+  (widget-log "[Shell] handling 'comm_msg' - parsing message~%")
+  (cl-jupyter::send-status-update (cl-jupyter::kernel-iopub (cl-jupyter::shell-kernel shell)) msg "busy" :key (cl-jupyter::kernel-key shell))'
+  (widget-log "[Shell] done sending busy~%")
+  (unwind-protect
+       (progn
+	 (widget-log "[Shell] Parsing message~%")
+	 (let ((content (myjson:parse-json-from-string (cl-jupyter::message-content msg))))
+	   (widget-log "  ==> msg = ~W~%" msg)
+	   (widget-log "  ==> comm_msg Message content = ~W~%" content)
+	   (let* ((kernel (cl-jupyter::kernel shell))
+		  (manager (gethash kernel *kernel-comm-managers*)))
+	     ;; Should I pass identities for ident??????
+	     ;; I have no idea what the stream is
+	     (comm-msg manager :I-dont-know-what-to-pass-for-stream :i-dont-know-what-to-pass-for-ident content))))
+    (widget-log "    Unwounding after parse-json-from-string or comm-msg~%"))
+  ;; status back to idle
+  (cl-jupyter::send-status-update (cl-jupyter::kernel-iopub (cl-jupyter::shell-kernel shell)) msg "idle" :key (cl-jupyter::kernel-key shell)))
 
 (defun handle-comm-close (shell identities msg buffers)
-  (warn "Handle comm_close: ~a" msg))
+  (widget-log "[Shell] handling 'comm_close' - parsing message~%")
+  (cl-jupyter::send-status-update (cl-jupyter::kernel-iopub (cl-jupyter::shell-kernel shell)) msg "busy" :key (cl-jupyter::kernel-key shell))'
+  (widget-log "[Shell] done sending busy~%")
+  (unwind-protect
+       (progn
+	 (widget-log "[Shell] Parsing message~%")
+	 (let ((content (myjson:parse-json-from-string (cl-jupyter::message-content msg))))
+	   (widget-log "  ==> msg = ~W~%" msg)
+	   (widget-log "  ==> comm_close Message content = ~W~%" content)
+	   (let* ((kernel (cl-jupyter::kernel shell))
+		  (manager (gethash kernel *kernel-comm-managers*)))
+	     ;; Should I pass identities for ident??????
+	     ;; I have no idea what the stream is
+	     (comm-close manager :I-dont-know-what-to-pass-for-stream :i-dont-know-what-to-pass-for-ident content))))
+    (widget-log "    Unwinding after parse-json-from-string or comm-close~%"))
+  ;; status back to idle
+  (cl-jupyter::send-status-update (cl-jupyter::kernel-iopub (cl-jupyter::shell-kernel shell)) msg "idle" :key (cl-jupyter::kernel-key shell)))
+
 
 (eval-when (:load-toplevel :execute)
   (setf cl-jupyter:*kernel-start-hook* #'kernel-start-hook)
