@@ -8,9 +8,12 @@
     :serial t
     :components ((:file "packages")
 		 (:file "tools")
-		 (:file "manager")
-		 (:file "comm")
-		 (:file "interface")))
+;		 (:file "manager")
+;		 (:file "comm")
+;		 (:file "interface")
+;		 (:file "traitlets")
+;		 (:file "widgets")
+		 ))
 
 
 ;;; Note - if this is loaded with quicklisp the first kernel-start-hook call needs
