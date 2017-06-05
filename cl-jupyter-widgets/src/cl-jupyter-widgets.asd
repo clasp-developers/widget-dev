@@ -8,11 +8,11 @@
     :serial t
     :components ((:file "packages")
 		 (:file "tools")
-;		 (:file "manager")
-;		 (:file "comm")
+		 (:file "manager")
 ;		 (:file "interface")
 ;		 (:file "traitlets")
 ;		 (:file "widgets")
+;		 (:file "comm")
 		 ))
 
 
