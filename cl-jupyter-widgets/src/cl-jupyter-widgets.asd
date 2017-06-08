@@ -9,10 +9,10 @@
     :components ((:file "packages")
 		 (:file "tools")
 		 (:file "manager")
-;		 (:file "interface")
+		 (:file "interface")
 ;		 (:file "traitlets")
-;		 (:file "widgets")
-;		 (:file "comm")
+;		 (:file "widget")
+		 (:file "comm")
 		 ))
 
 

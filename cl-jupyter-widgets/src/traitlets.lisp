@@ -2,6 +2,12 @@
 (in-package :cl-jupyter-widgets)
 
 
+(deftype cunicode 'string)
+(deftype bool '(member T nil :none))
+
+
+#|
+
 ;;; trait-type is copying the Python traitlets package
 ;;;  https://github.com/ipython/traitlets/blob/master/traitlets/traitlets.py
 
@@ -13,11 +19,12 @@
    (%info-text :initarg :info-text :accessor info-text :initform "any value")
    (%metadata :initarg :metadata :accessor metadata :initform nil)))
 
+
 (defclass unicode (trait-type)
   ()
   (:default-initargs
    :default-value (make-array 0 :element-type 'character)
-    :info-text 'A unicode value'))
+    :info-text "A unicode value"))
 
 (defun unicode (str &rest args)
   (apply #'make-instance 'unicode :default-value str args))
@@ -42,4 +49,4 @@
 
 (defun tuple (parts &rest args)
   (apply #'make-instance 'tuple :klass 'tuple args))
-
+|#

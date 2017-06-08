@@ -90,16 +90,16 @@ Sends a message to the model in the front-end."
   ()
   (:default-initargs
    :model-name (unicode "DOMWidgetModel" :metadata '( :sync T))
-    :visible (bool :true :allow-nil T
+    :visible (bool :true :allow-none T
 		   :help "Whether the widget is visible. :false collapses the empty space, while NIL preserves the empty space.")
     :dom-classes (tuple nil :help "DOM classes applied to widget.$el." :metadata '(:sync T))
-    :layout (make-layout :allow-nil T :metadata (list* :sync T widget-serialization))))
+    :layout (make-layout :allow-none T :metadata (list* :sync T widget-serialization))))
 
 
 
 (defclass int (dom-widget)
   ((%value :initform 0 :initarg :value :accessor value)
-   (%disabled :initform (bool :false :help "enable or disable user changes" :metadata  :initarg :disabled :accessor disabled))))
+   (%disabled :initform (bool nil :help "enable or disable user changes" :initarg :disabled :accessor disabled))))
 
 
 
@@ -113,12 +113,39 @@ Sends a message to the model in the front-end."
   (loop for slot-def in (clos:class-slots (class-of w))
      when (eq (clos:slot-definition-allocation slot-def) :instance)
      collect (cons (clos:slot-definition-name slot-def) (widget-slot-value w (clos:slot-definition-name slot-def)))))
-
-
-
     
 (defclass layout (widget)
-  "From ipywidgets/widgets/widget_layout.py
+  ((%align-content :initarg :align-content :accessor align-content :type 'cunicode)
+   (%align-items :initarg :align-items :accessor align-items :type 'cunicode)
+   (%align-self :initarg :align-self :accessor align-self :type 'cunicode)
+   (%bottom :initarg :bottom :accessor bottom :type 'cunicode)
+   (%border :initarg :border :accessor border :type 'cunicode)
+   (%display :initarg :display :accessor display :type 'cunicode)
+   (%flex :initarg :flex :accessor flex :type 'cunicode)
+   (%flex-flow :initarg :flex-flow :accessor flex-flow :type 'cunicode)
+   (%height :initarg :height :accessor height :type 'cunicode)
+   (%justify-content :initarg :justify-content :accessor justify-content :type 'cunicode)
+   (%left :initarg :left :accessor left :type 'cunicode)
+   (%margin :initarg :margin :accessor margin :type 'cunicode)
+   (%max-height :initarg :max-height :accessor max-height :type 'cunicode)
+   (%max-width :initarg :max-width :accessor max-width :type 'cunicode)
+   (%min-height :initarg :min-height :accessor min-height :type 'cunicode)
+   (%min-width :initarg :min-width :accessor min-width :type 'cunicode)
+   (%overflow :initarg :overflow :accessor overflow :type 'cunicode)
+   (%overflow-x :initarg :overflow-x :accessor overflow-x :type 'cunicode)
+   (%overflow-y :initarg :overflow-y :accessor overflow-y :type 'cunicode)
+   (%padding :initarg :padding :accessor padding :type 'cunicode)
+   (%right :initarg :right :accessor right :type 'cunicode)
+   (%top :initarg :top :accessor top :type 'cunicode)
+   (%visibility :initarg :visibility :accessor visibility :type 'cunicode)
+   (%width :initarg :width :accessor width :type 'cunicode)
+  (:default-initargs
+   :model-module (unicode "jupyter-js-widgets")
+    :view-module (unicode "jupyter-js-widgets")
+    :view-name (unicode "LayoutView")
+    :model-name (unicode "LayoutModel"))
+  (:documentation
+   "From ipywidgets/widgets/widget_layout.py
 Layout specification
 
     Defines a layout that can be expressed using CSS.  Supports a subset of
@@ -132,34 +159,6 @@ Layout specification
     - ``flex-wrap`` and ``flex-direction`` are bound to ``flex-flow``.
     - ``margin-[top/bottom/left/right]`` values are bound to ``margin``, etc.
     "
-  ((%align-content :initarg :align-content :accessor align-content :initform (CUnicode) :metadata '(:sync T))
-   (%align-items :initarg :align-items :accessor align-items :initform (CUnicode) :metadata '(:sync T))
-   (%align-self :initarg :align-self :accessor align-self :initform (CUnicode) :metadata '(:sync T))
-   (%bottom :initarg :bottom :accessor bottom :initform (CUnicode) :metadata '(:sync T))
-   (%border :initarg :border :accessor border :initform (CUnicode) :metadata '(:sync T))
-   (%display :initarg :display :accessor display :initform (CUnicode) :metadata '(:sync T))
-   (%flex :initarg :flex :accessor flex :initform (CUnicode) :metadata '(:sync T))
-   (%flex-flow :initarg :flex-flow :accessor flex-flow :initform (CUnicode) :metadata '(:sync T))
-   (%height :initarg :height :accessor height :initform (CUnicode) :metadata '(:sync T))
-   (%justify-content :initarg :justify-content :accessor justify-content :initform (CUnicode) :metadata '(:sync T))
-   (%left :initarg :left :accessor left :initform (CUnicode) :metadata '(:sync T))
-   (%margin :initarg :margin :accessor margin :initform (CUnicode) :metadata '(:sync T))
-   (%max-height :initarg :max-height :accessor max-height :initform (CUnicode) :metadata '(:sync T))
-   (%max-width :initarg :max-width :accessor max-width :initform (CUnicode) :metadata '(:sync T))
-   (%min-height :initarg :min-height :accessor min-height :initform (CUnicode) :metadata '(:sync T))
-   (%min-width :initarg :min-width :accessor min-width :initform (CUnicode) :metadata '(:sync T))
-   (%overflow :initarg :overflow :accessor overflow :initform (CUnicode) :metadata '(:sync T))
-   (%overflow-x :initarg :overflow-x :accessor overflow-x :initform (CUnicode) :metadata '(:sync T))
-   (%overflow-y :initarg :overflow-y :accessor overflow-y :initform (CUnicode) :metadata '(:sync T))
-   (%padding :initarg :padding :accessor padding :initform (CUnicode) :metadata '(:sync T))
-   (%right :initarg :right :accessor right :initform (CUnicode) :metadata '(:sync T))
-   (%top :initarg :top :accessor top :initform (CUnicode) :metadata '(:sync T))
-   (%visibility :initarg :visibility :accessor visibility :initform (CUnicode) :metadata '(:sync T))
-   (%width :initarg :width :accessor width :initform (CUnicode) :metadata '(:sync T)))
-  (:default-initargs
-      :model-module (unicode "jupyter-js-widgets" :metadata '(:sync T))
-    :view-module (unicode "jupyter-js-widgets" :metadata '(:sync T))
-    :view-name (unicode "LayoutView" :metadata '(:sync T))
-    :model-name (unicode "LayoutModel" :metadata '(:sync T))))
+   ))
 
 
