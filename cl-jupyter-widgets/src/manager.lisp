@@ -2,8 +2,6 @@
 ;;; Comments are copied from ipykernel
 (in-package #:cl-jupyter-widgets)
 
-(defvar *kernel* nil)
-      
 (defvar *kernel-comm-managers* (make-hash-table)
   "Map kernels to comm-managers")
 
@@ -48,7 +46,7 @@
 			      :primary nil
 			      :target-name target-name)))
     (register-comm self comm)
-    (if f
+    (if func
 	(handler-case
 	    (progn
 	      (funcall func comm msg)

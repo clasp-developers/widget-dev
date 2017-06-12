@@ -66,6 +66,8 @@ class Comm(LoggingConfigurable):
     _closed = Bool(True)
 
     def __init__(self, target_name='', data=None, metadata=None, buffers=None, **kwargs):
+        Comm.comm_log.write("Comm.__init__ kwargs -> %s\n" % kwargs)
+        Comm.comm_log.flush()
         if target_name:
             kwargs['target_name'] = target_name
         super(Comm, self).__init__(**kwargs)

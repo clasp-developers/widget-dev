@@ -4,14 +4,13 @@
     :version "0.6"
     :author "Christian Schafmeister"
     :license "BSD 2-Clause. See LICENSE."
-    :depends-on (:cl-jupyter)
     :serial t
     :components ((:file "packages")
 		 (:file "tools")
 		 (:file "manager")
 		 (:file "interface")
-;		 (:file "traitlets")
-;		 (:file "widget")
+		 (:file "traitlets")
+		 (:file "widget")
 		 (:file "comm")
 		 ))
 

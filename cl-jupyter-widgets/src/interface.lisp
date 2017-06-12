@@ -1,6 +1,20 @@
 (in-package #:cl-jupyter-widgets)
 
 
+(defvar *kernel* nil
+  "Set to this to the current kernel")
+(defvar *kernel-start-hook* nil
+  "Set this to a function to invoke a callback whenever a kernel is started")
+(defvar *kernel-shutdown-hook* nil
+  "Set this to a function to invoke a callback whenever a kernel is shutdown")
+(defvar *handle-comm-open-hook* nil
+  "Set this to a function to invoke a callback whenever an comm_open message is received")
+(defvar *handle-comm-msg-hook* nil
+  "Set this to a function to invoke a callback whenever an comm_msg message is received")
+(defvar *handle-comm-close-hook* nil
+  "Set this to a function to invoke a callback whenever an comm_close message is received")
+
+
 
 (defun kernel-start-hook (kernel)
   (widget-log "In kernel-start-hook kernel -> ~a~%" kernel)
