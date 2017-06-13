@@ -1,0 +1,5 @@
+#! /bin/bash
+rm ipykernel/ipykernel.log
+touch ipykernel/ipykernel.log
+rm cl-jupyter/widgets.log
+touch cl-jupyter/widgets.log

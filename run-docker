@@ -6,7 +6,7 @@ docker run -p 8888:8888 -p 4005:4005 -it $* \
        -v $HOME/Development/widget-dev/cl-jupyter:/home/app/quicklisp/local-projects/cl-jupyter \
        -v $HOME/Development/widget-dev/tools:/home/app/tools \
        -v $HOME:/home/app/work/home \
-       -v /tmp/docker-cache:/home/app/.cache/common-lisp/clasp-cclasp-boehm-frgo_clasp_dev_foreign_data_002-1212-g7a6472a-linux-x64/home/app/quicklisp/local-projects/cl-jupyter/src \
+       -v $HOME/Development/widget-dev/cache:/home/app/.cache/common-lisp/clasp-cclasp-boehm-frgo_clasp_dev_foreign_data_002-1212-g7a6472a-linux-x64/home/app/quicklisp/local-projects/cl-jupyter/src \
        drmeister/cando
 
 
