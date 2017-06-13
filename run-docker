@@ -1,12 +1,12 @@
 #!/bin/bash
-
+mkdir /tmp/docker-cache
 docker run -p 8888:8888 -p 4005:4005 -it $* \
        -v $HOME/Development/widget-dev/ipykernel:/usr/local/lib/python2.7/dist-packages/ipykernel \
        -v $HOME/Development/widget-dev/ipywidgets:/usr/local/lib/python2.7/dist-packages/ipywidgets \
        -v $HOME/Development/widget-dev/cl-jupyter:/home/app/quicklisp/local-projects/cl-jupyter \
-       -v $HOME/Development/widget-dev/cl-jupyter-widgets:/home/app/quicklisp/local-projects/cl-jupyter-widgets \
-       -v $HOME:/home/app/work/home \
        -v $HOME/Development/widget-dev/tools:/home/app/tools \
+       -v $HOME:/home/app/work/home \
+       -v /tmp/docker-cache:/home/app/.cache/common-lisp/clasp-cclasp-boehm-frgo_clasp_dev_foreign_data_002-1212-g7a6472a-linux-x64/home/app/quicklisp/local-projects/cl-jupyter/src \
        drmeister/cando
 
 
