@@ -1,5 +1,5 @@
 #!/bin/bash
-mkdir /tmp/docker-cache
+mkdir ./cache
 docker run -p 8888:8888 -p 4005:4005 -it $* \
        -v $HOME/Development/widget-dev/ipykernel:/usr/local/lib/python2.7/dist-packages/ipykernel \
        -v $HOME/Development/widget-dev/ipywidgets:/usr/local/lib/python2.7/dist-packages/ipywidgets \
