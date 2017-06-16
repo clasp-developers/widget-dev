@@ -1,6 +1,6 @@
 #!/bin/bash
-mkdir -f ./cache
-mkdir -f ./logs
+mkdir -p ./cache
+mkdir -p ./logs
 
 export CL_JUPYTER_CACHE=clasp-cclasp-boehm-frgo_clasp_dev_foreign_data_002-1212-g7a6472a-linux-x64
 
@@ -11,7 +11,6 @@ docker run -p 8888:8888 -p 4005:4005 -it $* \
        -v $HOME/Development/widget-dev/logs:/home/app/logs \
        -v $HOME/Development/widget-dev/cache:/home/app/.cache/common-lisp/$CL_JUPYTER_CACHE/home/app/quicklisp/local-projects/cl-jupyter/src \
        -v $HOME:/home/app/work/home \
-
        drmeister/cando
 
 
