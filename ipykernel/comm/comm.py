@@ -30,7 +30,7 @@ from traitlets import Instance, Unicode, Bytes, Bool, Dict, Any, default
 class Comm(LoggingConfigurable):
     """Class for communicating between a Frontend and a Kernel"""
     kernel = Instance('ipykernel.kernelbase.Kernel', allow_none=True)
-    comm_log = open("/usr/local/lib/python2.7/dist-packages/ipykernel/ipykernel.log","w")
+    comm_log = open("/home/app/logs/ipykernel.log","w")
     comm_log.write("!!!!!!!!!!!!!!!  Starting ipykernel.Comm log      !!!!!!!!!!!!!!!!!!\n")
     comm_log.flush()
     
