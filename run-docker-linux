@@ -2,4 +2,4 @@
 mkdir -p ./cache
 mkdir -p ./logs
 sudo chown 9999:9999 ./cache ./logs
-./run-docker $
+./run-docker $*
