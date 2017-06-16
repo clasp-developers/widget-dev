@@ -1,6 +1,6 @@
 #!/bin/bash
 mkdir -p ./cache
 mkdir -p ./logs
-chown -R 9999:9999 ./cache
-chown -R 9999:9999 ./logs
+chown 9999:9999 ./cache
+chown 9999:9999 ./logs
 ./run-docker $*
