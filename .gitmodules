@@ -1,3 +1,0 @@
-[submodule "cl-jupyter"]
-	path = cl-jupyter
-	url = https://github.com/clasp-developers/cl-jupyter.git
