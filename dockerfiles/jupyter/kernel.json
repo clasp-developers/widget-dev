@@ -1,0 +1,18 @@
+{
+    "argv": [
+        "/home/app/clasp/bin/clasp",
+        "--non-interactive",
+        "--feature",
+        "jupyter",
+        "--exec",
+        "(ext:chdir #P\"/work/\" t)",
+        "--load",
+        "/home/app/quicklisp/local-projects/cl-jupyter/cl-jupyter.lisp",
+        "--",
+        "/home/app/quicklisp/local-projects/cl-jupyter/src",
+        "/home/app/quicklisp/local-projects/cl-jupyter",
+        "{connection_file}"
+    ],
+    "display_name": "Cando",
+    "language": "lisp"
+}

@@ -1,0 +1,17 @@
+# docker-compose uses this file to build clasp or cando in 2 steps.
+# To compile clasp, you need to have docker set up, and docker-compose installed.
+# To build cando, the cando extension must be present at ./extensions/cando
+# To checkout cando's 'testing' branch, do this:
+#    git clone git@github.com:drmeister/cando.git extensions/cando
+#    cd extensions/cando && git checkout testing && cd -
+version: '2'
+services:
+  # To build pythonnb, run: docker-compose build pythonnb
+  pythonnb:
+    image: pythonnb
+    build:
+      context: .
+      dockerfile: dockerfiles/pythonnb/Dockerfile
+    ports:
+      - "8888:8888"
+
