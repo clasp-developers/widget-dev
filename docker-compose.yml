@@ -15,3 +15,11 @@ services:
     ports:
       - "8888:8888"
 
+  pythonrdkit:
+    image: pythonrdkit
+    build:
+      context: .
+      dockerfile: dockerfiles/pythonrdkit/Dockerfile
+    ports:
+      - "8888:8888"
+
