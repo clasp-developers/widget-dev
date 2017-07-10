@@ -23,3 +23,11 @@ services:
     ports:
       - "8888:8888"
 
+  test:
+    image: test
+    build:
+      context: .
+      dockerfile: dockerfiles/test/Dockerfile
+    ports:
+      - "8888:8888"
+

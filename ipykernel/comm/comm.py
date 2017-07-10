@@ -148,6 +148,8 @@ class Comm(LoggingConfigurable):
 
     def send(self, data=None, metadata=None, buffers=None):
         """Send a message to the frontend-side version of this comm"""
+        Comm.comm_log.write("Comm.send  data -> %s\n" % data)
+        Comm.comm_log.flush()
         self._publish_msg('comm_msg',
             data=data, metadata=metadata, buffers=buffers,
         )
