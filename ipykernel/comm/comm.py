@@ -83,13 +83,13 @@ class Comm(LoggingConfigurable):
         data = {} if data is None else data
         metadata = {} if metadata is None else metadata
         content = json_clean(dict(data=data, comm_id=self.comm_id, **keys))
-        Comm.comm_log.write("Comm._publish_msg ------------------------------------\n")
+        Comm.comm_log.write("Comm._publish_msg -(PYTHON!!!!!)---------------------\n")
         Comm.comm_log.write("msg_type = %s\n" % msg_type )
         Comm.comm_log.write("metadata = %s\n" % metadata )
         Comm.comm_log.write("self.kernel._parent_header = %s\n" % json.dumps(self.kernel._parent_header,indent=4,sort_keys=True,default=json_serial))
         Comm.comm_log.write("ident = %s\n" % self.topic )
         Comm.comm_log.write("buffers = %s\n" % buffers )
-        Comm.comm_log.write("---------- content >>>>>>>\n")
+        Comm.comm_log.write("++++++++++++++ contents >>>>>>>>>\n")
         Comm.comm_log.write("%s\n" % json.dumps(content, indent=4, sort_keys=True,default=json_serial))
         Comm.comm_log.write("  self.kernel.session -> %s\n" % self.kernel.session )
         real_msg = self.kernel.session.send(self.kernel.iopub_socket, msg_type,
