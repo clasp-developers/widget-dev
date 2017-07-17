@@ -1,0 +1,18 @@
+#!/bin/bash
+mkdir -p ./cache
+source cleanlogs
+
+export CL_JUPYTER_CACHE=clasp-cclasp-boehm-clasp_docker-linux-x64
+
+docker run -p 8888:8888 -p 4005:4005 -it $* \
+       -v $HOME/Development/widget-dev/ipykernel:/usr/local/lib/python2.7/dist-packages/ipykernel \
+       -v $HOME/Development/widget-dev/ipywidgets:/usr/local/lib/python2.7/dist-packages/ipywidgets \
+       -v $HOME/Development/widget-dev/nglview:/usr/local/lib/python2.7/dist-packages/nglview-0.6.5-py2.7.egg/nglview \
+       -v $HOME/Development/widget-dev/nglview-js-widgets:/usr/share/jupyter/nbextensions/nglview-js-widgets \
+       -v $HOME/quicklisp/local-projects/cl-jupyter:/home/app/quicklisp/local-projects/cl-jupyter \
+       -v $HOME/Development/widget-dev/logs:/home/app/logs \
+       -v $HOME/Development/widget-dev/cache:/home/app/.cache/common-lisp/$CL_JUPYTER_CACHE/home/app/quicklisp/local-projects/cl-jupyter/src \
+       -v $HOME:/home/app/work/home \
+       drmeister/cando-test
+
+
