@@ -1,0 +1,3 @@
+export CL_JUPYTER_DIR=~/quicklisp/local-projects/cl-jupyter
+export CANDO_LISP_DIR=~/Development/cando/extensions/cando/src/lisp
+export CLASP_DIR=~/Development/clasp
