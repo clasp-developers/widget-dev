@@ -1,25 +1,30 @@
 #!/bin/bash
-mkdir -p ./cache
-mkdir -p ./cache/cl-jupyter
-mkdir -p ./cache/cando-src-lisp
-mkdir -p ./logs
-source cleanlogs
-
-source local.config
+mkdir -p ~/docker-overlay/
+mkdir -p ~/docker-overlay/home/app/quicklisp/dists/quicklisp/software
+mkdir -p ~/docker-overlay/home/app/dot-cache
+mkdir -p ~/docker-overlay/home/app/logs
 
 export CL_JUPYTER_CACHE=clasp-cclasp-boehm-clasp_docker-linux-x64
 
 docker run -p 8888:8888 -p 4005:4005 -it $* \
-       -v $HOME/Development/widget-dev/ipywidgets7.0/ipykernel:/usr/local/lib/python2.7/dist-packages/ipykernel \
-       -v $HOME/Development/widget-dev/ipywidgets7.0/ipywidgets:/usr/local/lib/python2.7/dist-packages/ipywidgets \
-       -v $HOME/Development/widget-dev/nglview-v1.0.a1/nglview:/usr/local/lib/python2.7/dist-packages/nglview-1.0a1-py2.7.egg/nglview \
-       -v $HOME/Development/widget-dev/nglview-v1.0.a1/nglview/static:/usr/share/jupyter/nbextensions/nglview-js-widgets \
-       -v $CL_JUPYTER_DIR:/home/app/quicklisp/local-projects/cl-jupyter \
-       -v $CANDO_LISP_DIR:/home/app/clasp/Contents/Resources/source-code/extensions/cando/src/lisp \
-       -v $HOME/Development/widget-dev/logs:/home/app/logs \
-       -v $HOME/Development/widget-dev/cache/cl-jupyter:/home/app/.cache/common-lisp/$CL_JUPYTER_CACHE/home/app/quicklisp/local-projects/cl-jupyter \
-       -v $HOME/Development/widget-dev/cache/cando-src-lisp:/home/app/.cache/common-lisp/$CL_JUPYTER_CACHE/home/app/clasp/Contents/Resources/source-code/extensions/cando/src/lisp \
-       -v $CLASP_DIR/tools/dockerfiles/demos:/home/app/demos \
-       -v $HOME:/home/app/work/home \
+       -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/software:/home/app/quicklisp/dists/quicklisp/software \
+       -v $HOME/docker-overlay/dot-cache:/home/app/.cache \
+       -v $HOME/quicklisp/local-projects:/home/app/quicklisp/local-projects \
+       -v $HOME/docker-overlay/home/app/logs:/home/app/logs \
+       -v $HOME:/home/app/home \
        drmeister/cando
+
+#docker run -p 8888:8888 -p 4005:4005 -it $* \
+#       -v $HOME/Development/widget-dev/ipywidgets7.0/ipykernel:/usr/local/lib/python2.7/dist-packages/ipykernel \
+#       -v $HOME/Development/widget-dev/ipywidgets7.0/ipywidgets:/usr/local/lib/python2.7/dist-packages/ipywidgets \
+#       -v $HOME/Development/widget-dev/nglview-v1.0.a1/nglview:/usr/local/lib/python2.7/dist-packages/nglview-1.0a1-py2.7.egg/nglview \
+#       -v $HOME/Development/widget-dev/nglview-v1.0.a1/nglview/static:/usr/share/jupyter/nbextensions/nglview-js-widgets \
+#       -v $CL_JUPYTER_DIR:/home/app/quicklisp/local-projects/cl-jupyter \
+#       -v $CANDO_LISP_DIR:/home/app/clasp/Contents/Resources/source-code/extensions/cando/src/lisp \
+#       -v $HOME/Development/widget-dev/logs:/home/app/logs \
+#       -v $HOME/Development/widget-dev/cache/cl-jupyter:/home/app/.cache/common-lisp/$CL_JUPYTER_CACHE/home/app/quicklisp/local-projects/cl-jupyter \
+#       -v $HOME/Development/widget-dev/cache/cando-src-lisp:/home/app/.cache/common-lisp/$CL_JUPYTER_CACHE/home/app/clasp/Contents/Resources/source-code/extensions/cando/src/lisp \
+#       -v $CLASP_DIR/tools/dockerfiles/demos:/home/app/demos \
+#       -v $HOME:/home/app/work/home \
+#       drmeister/cando
 
