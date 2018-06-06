@@ -1,13 +1,18 @@
 #!/bin/bash
 mkdir -p ~/docker-overlay/
 mkdir -p ~/docker-overlay/home/app/quicklisp/dists/quicklisp/software
+mkdir -p ~/docker-overlay/home/app/quicklisp/dists/quicklisp/archives
+mkdir -p ~/docker-overlay/home/app/quicklisp/dists/quicklisp/installed
 mkdir -p ~/docker-overlay/home/app/dot-cache
 mkdir -p ~/docker-overlay/home/app/logs
 
 export CL_JUPYTER_CACHE=clasp-cclasp-boehm-clasp_docker-linux-x64
 
-docker run -p 8888:8888 -p 4005:4005 -it $* \
+docker run --privileged \
+       --security-opt seccomp=unconfined -p 8888:8888 -p 4005:4005 -it $* \
        -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/software:/home/app/quicklisp/dists/quicklisp/software \
+       -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/archives:/home/app/quicklisp/dists/quicklisp/archives \
+       -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/installed:/home/app/quicklisp/dists/quicklisp/installed \
        -v $HOME/docker-overlay/dot-cache:/home/app/.cache \
        -v $HOME/quicklisp/local-projects:/home/app/quicklisp/local-projects \
        -v $HOME/docker-overlay/home/app/logs:/home/app/logs \
