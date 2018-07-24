@@ -15,9 +15,11 @@ docker run --privileged \
        -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/installed:/home/app/quicklisp/dists/quicklisp/installed \
        -v $HOME/docker-overlay/dot-cache:/home/app/.cache \
        -v $HOME/quicklisp/local-projects:/home/app/quicklisp/local-projects \
+       -v $HOME/Development/widget-dev/ipywidgets7.1/miniconda_lib_python3.6_site-packages_notebook_base:/home/app/miniconda/lib/python3.6/site-packages/notebook/base \
        -v $HOME/docker-overlay/home/app/logs:/home/app/logs \
        -v $HOME:/home/app/home \
        drmeister/cando
+
 
 #docker run -p 8888:8888 -p 4005:4005 -it $* \
 #       -v $HOME/Development/widget-dev/ipywidgets7.0/ipykernel:/usr/local/lib/python2.7/dist-packages/ipykernel \
