@@ -16,6 +16,7 @@ docker run --privileged \
        -v $HOME/docker-overlay/dot-cache:/home/app/.cache \
        -v $HOME/quicklisp/local-projects:/home/app/quicklisp/local-projects \
        -v $HOME/Development/widget-dev/ipywidgets7.1/miniconda_lib_python3.6_site-packages_notebook_base:/home/app/miniconda/lib/python3.6/site-packages/notebook/base \
+       -v $HOME/Development/widget-dev/startup:/home/app/startup \
        -v $HOME/docker-overlay/home/app/logs:/home/app/logs \
        -v $HOME:/home/app/home \
        drmeister/cando
