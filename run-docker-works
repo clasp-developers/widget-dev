@@ -15,10 +15,11 @@ docker run --privileged \
        -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/installed:/home/app/quicklisp/dists/quicklisp/installed \
        -v $HOME/docker-overlay/dot-cache:/home/app/.cache \
        -v $HOME/quicklisp/local-projects:/home/app/quicklisp/local-projects \
+       -v $HOME/Development/widget-dev/ipywidgets7.1/jupyter_client:/home/app/miniconda/lib/python3.6/site-packages/jupyter_client \
        -v $HOME/Development/widget-dev/startup:/home/app/startup \
        -v $HOME/docker-overlay/home/app/logs:/home/app/logs \
        -v $HOME:/home/app/home \
-       drmeister/cando
+       drmeister/cando-works
 
 
 #docker run -p 8888:8888 -p 4005:4005 -it $* \
