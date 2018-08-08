@@ -8,11 +8,13 @@ mkdir -p ~/docker-overlay/home/app/logs
 
 export CL_JUPYTER_CACHE=clasp-cclasp-boehm-clasp_docker-linux-x64
 
+
 docker run --privileged \
        --security-opt seccomp=unconfined -p 8888:8888 -p 4005:4005 -it $* \
        -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/software:/home/app/quicklisp/dists/quicklisp/software \
        -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/archives:/home/app/quicklisp/dists/quicklisp/archives \
        -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/installed:/home/app/quicklisp/dists/quicklisp/installed \
+       -v $HOME/Development/widget-dev/ipywidgets7.1/miniconda_lib_python3.6_site-packages_notebook_base:/home/app/miniconda/lib/python3.6/site-packages/notebook/base \
        -v $HOME/docker-overlay/dot-cache:/home/app/.cache \
        -v $HOME/quicklisp/local-projects:/home/app/quicklisp/local-projects \
        -v $HOME/Development/widget-dev/startup:/home/app/startup \
