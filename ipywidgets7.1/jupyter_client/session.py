@@ -300,9 +300,11 @@ class Session(Configurable):
     """
 
     debug = Bool(False, config=True, help="""Debug output in the Session""")
-    _log = open("/home/app/logs/jupyter_client_session_%d.log"%os.getpid(),"w")
-    _log.write("Opening session_log\n")
-    _log.flush()
+    session_log = open("/home/app/logs/jupyter_client_session_%d.log"%os.getpid(),"w")
+    session_log.write("Opening session_log\n")
+    session_log.flush()
+    session_serialize = {}
+    session_deserialize = {}
     
     check_pid = Bool(True, config=True,
         help="""Whether to check PID to protect against calls after fork.
@@ -654,9 +656,15 @@ class Session(Configurable):
         to_send.append(signature)
 
         to_send.extend(real_message)
-        Session._log.write(">>>>> serialize------------\n")
-        pprint.pprint(msg,Session._log);
-        Session._log.flush()
+        Session.session_log.write(">>>>> serialize------------\n")
+        msg_id = msg['header']['msg_id']
+        if (msg_id in Session.session_serialize):
+            Session.session_serialize[msg_id] = Session.session_serialize[msg_id] + 1
+            Session.session_log.write("  repeated msg_id %s time #%d\n" % (msg_id,Session.session_serialize[msg_id]))
+        else:
+            Session.session_serialize[msg_id] = 1
+            pprint.pprint(msg,Session.session_log);
+        Session.session_log.flush()
         return to_send
 
     def send(self, stream, msg_or_type, content=None, parent=None, ident=None,
@@ -945,9 +953,15 @@ class Session(Configurable):
         message['buffers'] = buffers
         if self.debug:
             pprint.pprint(message)
-        Session._log.write("<<<<<<<< deserialize ------------\n")
-        pprint.pprint(message,Session._log);
-        Session._log.flush()
+        Session.session_log.write("<<<<<<<< deserialize ------------\n")
+        msg_id = message['header']['msg_id']
+        if (msg_id in Session.session_deserialize):
+            Session.session_deserialize[msg_id] = Session.session_deserialize[msg_id] + 1
+            Session.session_log.write("  repeated msg_id %s time #%d\n" % (msg_id,Session.session_deserialize[msg_id]))
+        else:
+            Session.session_deserialize[msg_id] = 1
+            pprint.pprint(message,Session.session_log);
+        Session.session_log.flush()
         # adapt to the current version
         return adapt(message)
 
