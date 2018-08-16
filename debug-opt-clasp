@@ -1,0 +1,18 @@
+#! /bin/bash -f
+SESSION_PY=/opt/clasp/lib/python3.6/site-packages/jupyter_client/session.py
+if [ "$1" = "toggle" ]; then
+ if [ -e $SESSION_PY.symlinked_away ]; then
+     echo "Turning OFF jupyter debug"
+     sudo rm $SESSION_PY
+     sudo mv $SESSION_PY.symlinked_away $SESSION_PY
+ else
+     echo "Turning ON jupyter debug"
+     sudo mv $SESSION_PY $SESSION_PY.symlinked_away
+     sudo ln -s `pwd`/ipywidgets7.1/jupyter_client/session.py $SESSION_PY
+ fi
+fi
+if [ -e $SESSION_PY.symlinked_away ]; then
+    echo "jupyter debug ON"
+else
+    echo "jupyter debug OFF"
+fi
