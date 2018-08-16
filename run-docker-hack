@@ -6,8 +6,9 @@ mkdir -p ~/docker-overlay/home/app/quicklisp/dists/quicklisp/installed
 mkdir -p ~/docker-overlay/home/app/save-cache
 mkdir -p ~/docker-overlay/home/app/logs
 
+
 docker run -it --privileged \
-       --security-opt seccomp=unconfined -p 8888:8888 -p 4005:4005 --entrypoint /home/app/startup/startup.sh \
+       --security-opt seccomp=unconfined -p 8888:8888 -p 4005:4005 --entrypoint /bin/bash \
        -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/software:/opt/clasp/lib/quicklisp/software \
        -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/archives:/opt/clasp/lib/quicklisp/archives \
        -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/installed:/opt/clasp/lib/quicklisp/dists/quicklisp/installed \
@@ -17,7 +18,7 @@ docker run -it --privileged \
        -v $HOME/docker-overlay/home/app/logs:/home/app/logs \
        -v $HOME/docker-overlay/home/app/save-cache:/home/app/save-cache \
        -v $HOME:/home/app/home \
-       drmeister/cando
+       hack
 
 #       -v $HOME/docker-overlay/dot-cache:/opt/clasp/lib/cache \
 

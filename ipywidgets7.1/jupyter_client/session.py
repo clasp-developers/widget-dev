@@ -20,6 +20,7 @@ import os
 import pprint
 import random
 import warnings
+import traceback
 from datetime import datetime
 
 try:
@@ -74,6 +75,20 @@ from traitlets.log import get_logger
 # utility functions
 #-----------------------------------------------------------------------------
 
+def cando_log(prefix,log,message,log_dict):
+    log.write("%s\n" %prefix)
+    msg_id = message['header']['msg_id']
+    if (msg_id in log_dict):
+        log_dict[msg_id] = log_dict[msg_id] + 1
+        log.write("   repeated msg_id %s time#%d\n" % (msg_id,log_dict[msg_id]))
+    else:
+        log_dict[msg_id] = 1
+        pprint.pprint(message,log)
+    log.flush()
+#            stack_str = ''.join(traceback.format_stack())
+#            Session.session_log.write("%s\n" % stack_str)
+        
+    
 def squash_unicode(obj):
     """coerce unicode back to bytestrings."""
     if isinstance(obj,dict):
@@ -300,8 +315,9 @@ class Session(Configurable):
     """
 
     debug = Bool(False, config=True, help="""Debug output in the Session""")
+    log_level = 2
     session_log = open("/home/app/logs/jupyter_client_session_%d.log"%os.getpid(),"w")
-    session_log.write("Opening session_log\n")
+    session_log.write("Opening session_log log_level = %d\n" % log_level)
     session_log.flush()
     session_serialize = {}
     session_deserialize = {}
@@ -656,16 +672,12 @@ class Session(Configurable):
         to_send.append(signature)
 
         to_send.extend(real_message)
-        Session.session_log.write(">>>>> serialize------------\n")
-        msg_id = msg['header']['msg_id']
-        if (msg_id in Session.session_serialize):
-            Session.session_serialize[msg_id] = Session.session_serialize[msg_id] + 1
-            Session.session_log.write("  repeated msg_id %s time #%d\n" % (msg_id,Session.session_serialize[msg_id]))
-        else:
-            Session.session_serialize[msg_id] = 1
-            pprint.pprint(msg,Session.session_log);
-        Session.session_log.flush()
+        if (Session.log_level > 2):
+            Session.session_log.write("ident -> %s\n" % ident)
+            Session.session_log.write("to_send -> |%s|\n" % to_send)
+        cando_log(">>> serialize",Session.session_log,msg,Session.session_serialize)
         return to_send
+
 
     def send(self, stream, msg_or_type, content=None, parent=None, ident=None,
              buffers=None, track=False, header=None, metadata=None):
@@ -751,7 +763,13 @@ class Session(Configurable):
         to_send.extend(buffers)
         longest = max([ len(s) for s in to_send ])
         copy = (longest < self.copy_threshold)
-
+        if (Session.log_level > 2):
+            Session.session_log.write("vvvvvvvvvvvvvvvvvvv Session.send\n")
+            Session.session_log.write("send ident -> %s\n" % ident)
+            Session.session_log.write("send stream.getsockopt(zmq.IDENTITY) -> %s\n" % stream.getsockopt(zmq.IDENTITY)) 
+            Session.session_log.write("send stream.getsockopt(zmq.TYPE) -> %s [[zmq.ROUTER == %d]]\n" % (stream.getsockopt(zmq.TYPE), zmq.ROUTER))
+            Session.session_log.write("to_send -> %s\n" % to_send)
+            Session.session_log.write("  sending to stream -> %s\n" % stream )
         if buffers and track and not copy:
             # only really track when we are doing zero-copy buffers
             tracker = stream.send_multipart(to_send, copy=False, track=True)
@@ -821,6 +839,11 @@ class Session(Configurable):
                 return None,None
             else:
                 raise
+        if (Session.log_level>2):
+            Session.session_log.write(" =============== recv ===============\n")
+            Session.session_log.write(" recv socket.getsockopt(zmq.IDENTITY) -> %s\n" % socket.getsockopt(zmq.IDENTITY)) 
+            Session.session_log.write(" recv socket.getsockopt(zmq.TYPE) -> %s [[zmq.ROUTER == %d]]\n" % (socket.getsockopt(zmq.TYPE), zmq.ROUTER))
+            Session.session_log.flush()
         # split multipart message into identity list and message dict
         # invalid large messages can cause very expensive string comparisons
         idents, msg_list = self.feed_identities(msg_list, copy)
@@ -855,6 +878,10 @@ class Session(Configurable):
         """
         if copy:
             idx = msg_list.index(DELIM)
+            if (Session.log_level > 2):
+                Session.session_log.write("<< << << << << << feed_identities splitting identities out of message prior to deserialize with copy\n")
+                Session.session_log.write("   feed_identities wire message: identities: %s  message: %s\n" % (msg_list[:idx], msg_list[idx+1:]))
+                Session.session_log.flush()
             return msg_list[:idx], msg_list[idx+1:]
         else:
             failed = True
@@ -865,6 +892,10 @@ class Session(Configurable):
             if failed:
                 raise ValueError("DELIM not in msg_list")
             idents, msg_list = msg_list[:idx], msg_list[idx+1:]
+            if (Session.log_level > 2):
+                Session.session_log.write("<< << << << << << feed_identities splitting identities out of message prior to deserialize WITHOUT copy\n")
+                Session.session_log.write("   feed_identities wire message: identities: %s  message: %s\n" % ([m.bytes for m in idents], [m.bytes for m in msg_list]))
+                Session.session_log.flush()
             return [m.bytes for m in idents], msg_list
 
     def _add_digest(self, signature):
@@ -953,15 +984,7 @@ class Session(Configurable):
         message['buffers'] = buffers
         if self.debug:
             pprint.pprint(message)
-        Session.session_log.write("<<<<<<<< deserialize ------------\n")
-        msg_id = message['header']['msg_id']
-        if (msg_id in Session.session_deserialize):
-            Session.session_deserialize[msg_id] = Session.session_deserialize[msg_id] + 1
-            Session.session_log.write("  repeated msg_id %s time #%d\n" % (msg_id,Session.session_deserialize[msg_id]))
-        else:
-            Session.session_deserialize[msg_id] = 1
-            pprint.pprint(message,Session.session_log);
-        Session.session_log.flush()
+        cando_log("<<< deserialize",Session.session_log,message,Session.session_deserialize)
         # adapt to the current version
         return adapt(message)
 
