@@ -316,7 +316,10 @@ class Session(Configurable):
 
     debug = Bool(False, config=True, help="""Debug output in the Session""")
     log_level = 2
-    session_log = open("/home/app/logs/jupyter_client_session_%d.log"%os.getpid(),"w")
+    if (os.path.isdir("/home/app/logs")):
+        session_log = open("/home/app/logs/jupyter_client_session_%d.log"%os.getpid(),"w")
+    else:
+        session_log = open("/tmp/jupyter_client_session_%d.log"%os.getpid(),"w")
     session_log.write("Opening session_log log_level = %d\n" % log_level)
     session_log.flush()
     session_serialize = {}
