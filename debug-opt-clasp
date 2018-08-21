@@ -1,5 +1,12 @@
 #! /bin/bash -f
-SESSION_PY=/opt/clasp/lib/python3.6/site-packages/jupyter_client/session.py
+SESSION_PY=/opt/clasp/lib/python3.7/site-packages/jupyter_client/session.py
+if [ -e $SESSION_PY ]
+then
+    echo "Found $SESSION_PY"
+else
+    echo "Could not find $SESSION_PY - do you have the correct python version?"
+    exit 1
+fi
 if [ "$1" = "toggle" ]; then
  if [ -e $SESSION_PY.symlinked_away ]; then
      echo "Turning OFF jupyter debug"
