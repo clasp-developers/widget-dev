@@ -681,7 +681,6 @@ class Session(Configurable):
         cando_log(">>> serialize",Session.session_log,msg,Session.session_serialize)
         return to_send
 
-
     def send(self, stream, msg_or_type, content=None, parent=None, ident=None,
              buffers=None, track=False, header=None, metadata=None):
         """Build and send a message via stream or socket.
@@ -976,6 +975,7 @@ class Session(Configurable):
         message['msg_type'] = header['msg_type']
         message['parent_header'] = extract_dates(self.unpack(msg_list[2]))
         message['metadata'] = self.unpack(msg_list[3])
+        Session.session_log.write("msg_list[4] before unpack: %s\n" % msg_list[4])
         if content:
             message['content'] = self.unpack(msg_list[4])
         else:

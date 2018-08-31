@@ -1,8 +1,10 @@
 #! /bin/bash -f
 SESSION_PY=/opt/clasp/lib/python3.7/site-packages/jupyter_client/session.py
+#SESSION_PY=/usr/local/Cellar/ipython/6.5.0/libexec/vendor/lib/python3.7/site-packages/jupyter_client/session.py
+echo "Looking for $SESSION_PY"
 if [ -e $SESSION_PY ]
 then
-    echo "Found $SESSION_PY"
+    ls -l $SESSION_PY
 else
     echo "Could not find $SESSION_PY - do you have the correct python version?"
     exit 1
