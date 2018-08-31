@@ -3,24 +3,24 @@ mkdir -p ~/docker-overlay/
 mkdir -p ~/docker-overlay/home/app/quicklisp/dists/quicklisp/software
 mkdir -p ~/docker-overlay/home/app/quicklisp/dists/quicklisp/archives
 mkdir -p ~/docker-overlay/home/app/quicklisp/dists/quicklisp/installed
-mkdir -p ~/docker-overlay/home/app/dot-cache
+mkdir -p ~/docker-overlay/home/app/save-cache
 mkdir -p ~/docker-overlay/home/app/logs
 
-export CL_JUPYTER_CACHE=clasp-cclasp-boehm-clasp_docker-linux-x64
 
-
-docker run --privileged \
-       --security-opt seccomp=unconfined -p 8888:8888 -p 4005:4005 -it $* \
-       -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/software:/home/app/quicklisp/dists/quicklisp/software \
-       -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/archives:/home/app/quicklisp/dists/quicklisp/archives \
-       -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/installed:/home/app/quicklisp/dists/quicklisp/installed \
-       -v $HOME/Development/widget-dev/ipywidgets7.1/miniconda_lib_python3.6_site-packages_notebook_base:/home/app/miniconda/lib/python3.6/site-packages/notebook/base \
-       -v $HOME/docker-overlay/dot-cache:/home/app/.cache \
-       -v $HOME/quicklisp/local-projects:/home/app/quicklisp/local-projects \
+docker run -it --privileged \
+       --security-opt seccomp=unconfined -p 8888:8888 -p 4005:4005 $* \
+       -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/software:/opt/clasp/lib/quicklisp/software \
+       -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/archives:/opt/clasp/lib/quicklisp/archives \
+       -v $HOME/docker-overlay/home/app/quicklisp/dists/quicklisp/installed:/opt/clasp/lib/quicklisp/dists/quicklisp/installed \
+       -v $HOME/quicklisp/local-projects:/opt/clasp/lib/quicklisp/local-projects \
+       -v $HOME/Development/widget-dev/ipywidgets7.1/jupyter_client:/opt/clasp/lib/python3.7/site-packages/jupyter_client \
        -v $HOME/Development/widget-dev/startup:/home/app/startup \
        -v $HOME/docker-overlay/home/app/logs:/home/app/logs \
+       -v $HOME/docker-overlay/home/app/save-cache:/home/app/save-cache \
        -v $HOME:/home/app/home \
        drmeister/cando
+
+#       -v $HOME/docker-overlay/dot-cache:/opt/clasp/lib/cache \
 
 
 #docker run -p 8888:8888 -p 4005:4005 -it $* \
